@@ -22,16 +22,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const programModal = document.getElementById('programModal');
 
     // ٢. پاڵاوتنی توندی خانەکان (Input Validations)
+    
+    // خانەی ناوی سیانی: تەنها ڕێگە بە دەقی کوردی/عەرەبی دەدات و ژمارە، ئینگلیزی و هێماکان لادەبات
     userName.addEventListener('input', function() {
-        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z.,\/#!$%\^&\*;:{}=\-_`~()?"'@+<>]/g, '');
-        this.value = this.value.replace(/[^\u0600-\u06FF\s]/g, '');
+        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z.,\/#!$%\^&\*;:{}=\-_`~()?"'@+<>|\\\[\]}{]/g, '');
     });
 
+    // خانەی زانکۆ و کۆلێژ: تەنها ڕێگە بە دەقی کوردی/عەرەبی دەدات و ژمارە، ئینگلیزی و هێماکان لادەبات
     userUniversity.addEventListener('input', function() {
-        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z.,\/#!$%\^&\*;:{}=\-_`~()?"'@+<>]/g, '');
-        this.value = this.value.replace(/[^\u0600-\u06FF\s]/g, '');
+        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z.,\/#!$%\^&\*;:{}=\-_`~()?"'@+<>|\\\[\]}{]/g, '');
     });
 
+    // خانەی ئیمێڵ: تەنها پیتی ئینگلیزی، ژمارە و هێماکانی ئیمێڵ وەردەگرێت
     userEmail.addEventListener('input', function() {
         this.value = this.value.replace(/[\u0600-\u06FF]/g, ''); 
         this.value = this.value.replace(/[^A-Za-z0-9@._\-]/g, ''); 
@@ -119,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 codeContainer.classList.add('hidden');
                 verificationCodeInput.required = false;
             } else {
-                // نیشاندانی پەیامی وەرگێڕدراوی کوردی بۆ مەرجەکانی کۆدەکە
                 let kurdishError = "هەڵەیەک لە سیستمەکەدا هەیە.";
                 if (result.message === 'empty_code') kurdishError = "تکایە کۆدی دڵنیایی بنووسە.";
                 if (result.message === 'code_used') kurdishError = "ئەم کۆدە پێشتر بەکارهاتووە!";
@@ -130,7 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error("Fetch Error:", error);
-            // لۆژیکی پاڵپشت کاتێک براوسەر بە هۆکاری CORS لەسەر لۆکاڵ هۆست بلۆکی دەکات
             showNotification("تۆمارکردن نێردرا", "داواکارییەکە ئاڕاستەی گۆگڵ کرا. تکایە شیتەکەت بپشکنە.", "success");
         } finally {
             submitBtn.disabled = false;
