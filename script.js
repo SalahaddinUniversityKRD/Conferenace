@@ -21,25 +21,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeProgramBtn = document.getElementById('closeProgramBtn');
     const programModal = document.getElementById('programModal');
 
-    // ٢. پاڵاوتنی توندی خانەکان (Input Validations) - بە شێوازی فەرمی ڕێجێکس
+    // ٢. پاڵاوتنی توندی خانەکان (Input Validations) - مۆدی ڕێجێکسی هاوسەنگ
     
-    // خانەی ناوی سیانی: تەنها ڕێگەدان بە دەقی کوردی/عەرەبی و سپەیس (سڕینەوەی هێما، ژمارە و ئینگلیزی)
+    // خانەی ناوی سیانی: تەنها ڕێگەدان بە دەقی کوردی/عەرەبی و سپەیس
     userName.addEventListener('input', function() {
         let start = this.selectionStart;
         let originalLength = this.value.length;
         
-        this.value = this.value.replace(/[0-9٠-٩۰-۹A-Za-z`~!@#$%^&*()_\-+=\[\]{}|\\:;"'<>,.?\/؟٪]/g, '');
+        // بردنی نیشانەی (-) بۆ کۆتایی فلتەرەکە بۆ ڕێگری لە قفڵبوونی خانەکە
+        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z`~!@#$%^&*()_+=\[\]{}|\\:;"'<>,.?\/؟٪\-]/g, '');
         
         let newLength = this.value.length;
         this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
     });
 
-    // خانەی زانکۆ و کۆلێژ: تەنها ڕێگەدان بە دەقی کوردی/عەرەبی و سپەیس
+    // خانەی زانکۆ و کۆلێژ: تەنها ڕێگەدان بە دەقی کوردی/عەرەبی و سپەیس (ڕێک وەک ناوی سیانی)
     userUniversity.addEventListener('input', function() {
         let start = this.selectionStart;
         let originalLength = this.value.length;
         
-        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z`~!@#$%^&*()_\-+=\[\]{}|\\:;"'<>,.?\/؟٪]/g, '');
+        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z`~!@#$%^&*()_+=\[\]{}|\\:;"'<>,.?\/؟٪\-]/g, '');
         
         let newLength = this.value.length;
         this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
@@ -132,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (result.status === 'success') {
-                showNotification("تۆمارکردن سەرکەوتوو بوو", "زانیارییەکانت بە سەرکەوتوویی تۆمارکران. ئیمێڵەکەت یان شیتەکە ببێنە.", "success");
+                showNotification("تۆمارکردن سەرکەوو بوو", "زانیارییەکانت بە سەرکەوتوویی تۆمارکران. ئیمێڵەکەت یان شیتەکە ببێنە.", "success");
                 form.reset();
                 dropdownSelectedValue.innerText = "بەشداربوون (بێ بڕوانامە - خۆڕایی)";
                 certOptionInput.value = "بێ بڕوانامە";
