@@ -21,23 +21,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeProgramBtn = document.getElementById('closeProgramBtn');
     const programModal = document.getElementById('programModal');
 
-    // ٢. فەنکشنی هاوبەش بۆ پاڵاوتنی توندی خانە کوردییەکان (ناوی سیانی + زانکۆ)
-    function filterKurdishInput(inputElement) {
-        inputElement.addEventListener('input', function() {
-            let start = this.selectionStart;
-            let originalLength = this.value.length;
-            
-            // سڕینەوەی ئینگلیزی، ژمارەکان و هەموو جۆرە هێمایەکی کوردی و جیهانی بە گەرەنتی
-            this.value = this.value.replace(/[A-Za-z0-9٠-٩0-۹!"#$%&'()*+,\-.\/:;<=>?@\[\\\]\^_`{|}~؟٪]/g, '');
-            
-            let newLength = this.value.length;
-            this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
-        });
-    }
+    // ٢. پاڵاوتنی خانەکان (Input Validations) - مۆدی جیاکراوەی بێ باگ
+    
+    // خانەی ناوی سیانی: تەنها ڕێگەدان بە دەقی کوردی/عەرەبی و سپەیس
+    userName.addEventListener('input', function() {
+        let start = this.selectionStart;
+        let originalLength = this.value.length;
+        
+        // پاککردنەوەی هەنگاو بە هەنگاو بۆ ڕێگری لە قفڵبوون
+        this.value = this.value.replace(/[A-Za-z]/g, ''); // سڕینەوەی ئینگلیزی
+        this.value = this.value.replace(/[0-9٠-٩0-۹]/g, ''); // سڕینەوەی ژمارەکان
+        this.value = this.value.replace(/[`~!@#$%^&*()_\-+=\[\]{}|\\:;"'<>,.?\/؟٪]/g, ''); // سڕینەوەی هێماکان
+        
+        let newLength = this.value.length;
+        this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
+    });
 
-    // کاراکردنی فەنکشنە یەکدەستەکە لەسەر هەردوو خانەکە بەبێ جیاوازی
-    filterKurdishInput(userName);
-    filterKurdishInput(userUniversity);
+    // خانەی زانکۆ و کۆلێژ: ڕێک هاوشێوەی خانەی ناوی سیانی بەبێ هیچ جیاوازییەک
+    userUniversity.addEventListener('input', function() {
+        let start = this.selectionStart;
+        let originalLength = this.value.length;
+        
+        this.value = this.value.replace(/[A-Za-z]/g, ''); // سڕینەوەی ئینگلیزی
+        this.value = this.value.replace(/[0-9٠-٩0-۹]/g, ''); // سڕینەوەی ژمارەکان
+        this.value = this.value.replace(/[`~!@#$%^&*()_\-+=\[\]{}|\\:;"'<>,.?\/؟٪]/g, ''); // سڕینەوەی هێماکان
+        
+        let newLength = this.value.length;
+        this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
+    });
 
     // خانەی ئیمێڵ: تەنها پیتی ئینگلیزی، ژمارە و هێماکانی ئیمێڵ وەردەگرێت
     userEmail.addEventListener('input', function() {
