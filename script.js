@@ -21,42 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeProgramBtn = document.getElementById('closeProgramBtn');
     const programModal = document.getElementById('programModal');
 
-    // ٢. پاڵاوتنی خانەکان (Input Validations) - مۆدی تەنها بلۆککردنی ئینگلیزی و ژمارە
+    // ٢. پاڵاوتنی خانەکان (Input Validations)
+    // خانەکانی ناوی سیانی و زانکۆ بە تەواوی ئازاد کران بۆ نووسینی هەر زمان و هێمایەک بەبێ بلۆککردن
     
-    // خانەی ناوی سیانی: تەنها ڕێگری لە پیت و ژمارەی ئینگلیزی دەکات (کوردی و عەرەبی ئازادن)
-    userName.addEventListener('input', function() {
-        let start = this.selectionStart;
-        let originalLength = this.value.length;
-        
-        // تەنها سڕینەوەی پیتە ئینگلیزییەکان و ژمارەکان
-        this.value = this.value.replace(/[A-Za-z0-9]/g, '');
-        
-        let newLength = this.value.length;
-        this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
-    });
-
-    // خانەی زانکۆ و کۆلێژ: تەنها ڕێگری لە پیت و ژمارەی ئینگلیزی دەکات (کوردی و عەرەبی ئازادن)
-    userUniversity.addEventListener('input', function() {
-        let start = this.selectionStart;
-        let originalLength = this.value.length;
-        
-        // تەنها سڕینەوەی پیتە ئینگلیزییەکان و ژمارەکان
-        this.value = this.value.replace(/[A-Za-z0-9]/g, '');
-        
-        let newLength = this.value.length;
-        this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
-    });
-
-    // خانەی ئیمێڵ: تەنها پیتی ئینگلیزی، ژمارە و هێماکانی ئیمێڵ وەردەگرێت
+    // خانەی ئیمێڵ: تەنها ڕێگری لە پیتە کوردی/عەرەبییەکان دەکات بۆ پاراستنی فرماتی ئیمێڵ
     userEmail.addEventListener('input', function() {
-        let start = this.selectionStart;
-        let originalLength = this.value.length;
-        
         this.value = this.value.replace(/[\u0600-\u06FF]/g, ''); 
         this.value = this.value.replace(/[^A-Za-z0-9@._\-]/g, ''); 
-        
-        let newLength = this.value.length;
-        this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
     });
 
     // ٣. لۆژیکی کارکردنی دراپداونی مۆدێرن (Custom Dropdown)
