@@ -21,26 +21,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeProgramBtn = document.getElementById('closeProgramBtn');
     const programModal = document.getElementById('programModal');
 
-    // ٢. پاڵاوتنی توندی خانەکان (Input Validations)
+    // ٢. پاڵاوتنی توندی خانەکان (Input Validations) - مۆدی ماتماتیکی بێ باگ
     
-    // خانەی ناوی سیانی: پاککردنەوەی پیتە ئینگلیزییەکان، ژمارەکان و هێماکان بە جیا
+    // خانەی ناوی سیانی: تەنها ڕێگە بە پیتەکانی کوردی/عەرەبی و سپەیس دەدات
     userName.addEventListener('input', function() {
-        this.value = this.value.replace(/[A-Za-z]/g, ''); // لادانی پیتە ئینگلیزییەکان
-        this.value = this.value.replace(/[0-9٠-٩0-۹]/g, ''); // shadow لادانی هەموو جۆرە ژمارەیەک
-        this.value = this.value.replace(/[~`!@#$%^&*()_\-+={}\[\]|\\:;"'<>,.?\/]/g, ''); // لادانی هێماکان بە سەلامەتی
+        let result = "";
+        for (let i = 0; i < this.value.length; i++) {
+            let char = this.value[i];
+            let code = this.value.charCodeAt(i);
+            
+            // تەنها ڕێگەدان بە سپەیس (32) و پیتەکانی مەودای کوردی/عەرەبی (1569 تا 1791)
+            // بەدەرکردنی ژمارە عەرەبی و فارسییەکان و هێماکانی ناو ئەو مەودایە
+            if (code === 32 || (code >= 1569 && code <= 1791)) {
+                if (!(code >= 1632 && code <= 1645) && ! (code >= 1776 && code <= 1785) && code !== 1748) {
+                    result += char;
+                }
+            }
+        }
+        this.value = result;
     });
 
-    // خانەی زانکۆ و کۆلێژ: پاککردنەوەی پیتە ئینگلیزییەکان، ژمارەکان و هێماکان بە جیا
+    // خانەی زانکۆ و کۆلێژ: تەنها ڕێگە بە پیتەکانی کوردی/عەرەبی و سپەیس دەدات
     userUniversity.addEventListener('input', function() {
-        this.value = this.value.replace(/[A-Za-z]/g, ''); 
-        this.value = this.value.replace(/[0-9٠-٩0-۹]/g, ''); 
-        this.value = this.value.replace(/[~`!@#$%^&*()_\-+={}\[\]|\\:;"'<>,.?\/]/g, ''); 
+        let result = "";
+        for (let i = 0; i < this.value.length; i++) {
+            let char = this.value[i];
+            let code = this.value.charCodeAt(i);
+            
+            if (code === 32 || (code >= 1569 && code <= 1791)) {
+                if (!(code >= 1632 && code <= 1645) && ! (code >= 1776 && code <= 1785) && code !== 1748) {
+                    result += char;
+                }
+            }
+        }
+        this.value = result;
     });
 
     // خانەی ئیمێڵ: تەنها پیتی ئینگلیزی، ژمارە و هێماکانی ئیمێڵ وەردەگرێت
     userEmail.addEventListener('input', function() {
-        this.value = this.value.replace(/[\u0600-\u06FF]/g, ''); 
-        this.value = this.value.replace(/[^A-Za-z0-9@._\-]/g, ''); 
+        let result = "";
+        let allowedSymbols = "@._-";
+        for (let i = 0; i < this.value.length; i++) {
+            let char = this.value[i];
+            let code = this.value.charCodeAt(i);
+            
+            // تەنها ڕێگەدان بە پیتە ئینگلیزییەکان، ژمارەکان و هێماکانی ئیمێڵ
+            if ((code >= 65 && code <= 90) || (code >= 97 && code <= 122) || (code >= 48 && code <= 57) || allowedSymbols.includes(char)) {
+                result += char;
+            }
+        }
+        this.value = result;
     });
 
     // ٣. لۆژیکی کارکردنی دراپداونی مۆدێرن (Custom Dropdown)
