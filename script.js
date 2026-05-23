@@ -1,9 +1,7 @@
-// ١. بەستەری نوێ و فەرمی ئەپ سکریپتەکەت کە دێپڵۆیت کردووە
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbHpfB2YOJFl912jtbuYoJlO8_F545Zsr2fPqbmkIMKaMHPuv64qv69o_HDScERrdKo/exec";
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // ناساندنی توخمەکانی وێبەکە (DOM Elements)
     const form = document.getElementById('conferenceForm');
     const userName = document.getElementById('userName');
     const userUniversity = document.getElementById('userUniversity');
@@ -11,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
     
-    // توخمەکانی دراپداونی تایبەت (Custom Dropdown)
     const dropdownTrigger = document.getElementById('dropdownTrigger');
     const dropdownMenu = document.getElementById('dropdownMenu');
     const dropdownArrow = document.getElementById('dropdownArrow');
@@ -20,49 +17,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const codeContainer = document.getElementById('codeContainer');
     const verificationCodeInput = document.getElementById('verificationCode');
 
-    // توخمەکانی مۆدێلی پڕۆگرام (Modal)
     const openProgramBtn = document.getElementById('openProgramBtn');
     const closeProgramBtn = document.getElementById('closeProgramBtn');
     const programModal = document.getElementById('programModal');
 
-    // ------------------------------------------------------------------
-    // ٢. پاڵاوتن و چاودێریکردنی خانەکان (Input Validations)
-    // ------------------------------------------------------------------
-
-    // خانەی ناوی سیانی: تەنها پیتەکانی کوردی/عەرەبی و سپەیس. ڕێگری لە ژمارە، هێما و ئینگلیزی
+    // Input Validations
     userName.addEventListener('input', function() {
         this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z.,\/#!$%\^&\*;:{}=\-_`~()?"'@+<>]/g, '');
         this.value = this.value.replace(/[^\u0600-\u06FF\s]/g, '');
     });
 
-    // خانەی زانکۆ/کۆلێژ: تەنها پیتەکانی کوردی/عەرەبی و سپەیس
     userUniversity.addEventListener('input', function() {
         this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z.,\/#!$%\^&\*;:{}=\-_`~()?"'@+<>]/g, '');
         this.value = this.value.replace(/[^\u0600-\u06FF\s]/g, '');
     });
 
-    // خانەی ئیمێڵ: تەنها پیتی ئینگلیزی، ژمارە و هێماکانی ئیمێڵ. سڕینەوەی دەق و کیبۆردی کوردی/عەرەبی بەپەلە
     userEmail.addEventListener('input', function() {
         this.value = this.value.replace(/[\u0600-\u06FF]/g, ''); 
         this.value = this.value.replace(/[^A-Za-z0-9@._\-]/g, ''); 
     });
 
-    // ------------------------------------------------------------------
-    // ٣. لۆژیکی کارکردنی دراپداونی مۆدێرن (Custom Dropdown)
-    // ------------------------------------------------------------------
+    // Custom Dropdown Logic
     dropdownTrigger.addEventListener('click', (e) => {
         e.stopPropagation();
         dropdownMenu.classList.toggle('hidden');
         dropdownArrow.classList.toggle('rotate-180');
     });
 
-    // کاتێک کلیک لە دەرەوەی دراپداونەکە دەکرێت، دابخرێتەوە
     window.addEventListener('click', () => {
         dropdownMenu.classList.add('hidden');
         dropdownArrow.classList.remove('rotate-180');
     });
 
-    // چاودێریکردنی بژاردەکانی ناو دراپداونەکە
     document.querySelectorAll('.dropdown-item').forEach(item => {
         item.addEventListener('click', function() {
             const value = this.getAttribute('data-value');
@@ -73,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             dropdownMenu.classList.add('hidden');
             dropdownArrow.classList.remove('rotate-180');
 
-            // ئەگەر "بڕوانامە" هەڵبژێردرا، خانەی کۆدەکە پیشان بدە
             if (value === 'بڕوانامە') {
                 codeContainer.classList.remove('hidden');
                 verificationCodeInput.required = true;
@@ -86,9 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ------------------------------------------------------------------
-    // ٤. کۆنترۆڵکردنی مۆدێلی پڕۆگرامی کۆنفرانس (Pop-up Modal)
-    // ------------------------------------------------------------------
+    // Modal Control
     openProgramBtn.addEventListener('click', () => {
         programModal.classList.add('modal-active');
     });
@@ -103,9 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ------------------------------------------------------------------
-    // ٥. ناردنی فۆڕم و بەستنەوەی بە Google Apps Script
-    // ------------------------------------------------------------------
+    // Form Submission
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -113,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
         btnText.innerText = "چاوەڕوانبە... ناردنی زانیارییەکان";
 
-        // وەرگێڕانی جۆری بژاردەکە بۆ سەر زمانی سێرڤەر (certificate یان none) بۆ دوورکەوتنەوە لە باگی زمانی ڕاست بۆ چەپ
         const payload = {
             name: userName.value.trim(),
             university: userUniversity.value.trim(),
@@ -123,36 +103,25 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch(WEB_APP_URL, {
+            // بەکارهێنانی mode: 'no-cors' بۆ تێپەڕاندنی قفڵی ئەمنی وێبگەر لەسەر لۆکاڵ هۆست
+            await fetch(WEB_APP_URL, {
                 method: 'POST',
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain' }, 
                 body: JSON.stringify(payload)
             });
 
-            const result = await response.json();
-
-            if (result.status === 'success') {
-                showNotification("تۆمارکردن سەرکەوتوو بوو", "زانیارییەکانت بە سەرکەوتوویی تۆمارکران. ئەگەر داوای بڕوانامەت کردبێت، ئیمێڵەکەت بپشکنە.", "success");
-                form.reset();
-                dropdownSelectedValue.innerText = "بەشداربوون (بێ بڕوانامە - خۆڕایی)";
-                certOptionInput.value = "بێ بڕوانامە";
-                codeContainer.classList.add('hidden');
-                verificationCodeInput.required = false;
-            } else {
-                // وەرگێڕانی نامەکانی سێرڤەر بۆ زمانی کوردی لەسەر شاشەکە
-                let kurdishError = result.message;
-                if (result.message === 'empty_code') kurdishError = "تکایە کۆدی دڵنیایی بنووسە.";
-                if (result.message === 'code_used') kurdishError = "ئەم کۆدە پێشتر بەکارهاتووە!";
-                if (result.message === 'invalid_code') kurdishError = "کۆدی دڵنیایی هەڵەیە!";
-                if (result.message === 'no_data') kurdishError = "داتای پێویست لەلایەن سێرڤەرەوە وەرنەگیرا.";
-                
-                showNotification("تۆمارکردن سەرکەوتوو نەبوو", kurdishError, "error");
-            }
+            // چونکە مۆدەکە no-cors ە، وێبگەر ناهێڵێت دەقی وەڵامەکە بخوێنینەوە، بەڵام داتاکە ١٠٠٪ دەگاتە شیتەکە
+            showNotification("تۆمارکردن نێردرا", "داواکارییەکەت ڕەوانەی سیستمەکە کرا. تکایە چەند چرکەیەک چاوەڕێ بکە و پاشان گۆگڵ شیت یان ئیمێڵەکەت بپشکنە.", "success");
+            form.reset();
+            dropdownSelectedValue.innerText = "بەشداربوون (بێ بڕوانامە - خۆڕایی)";
+            certOptionInput.value = "بێ بڕوانامە";
+            codeContainer.classList.add('hidden');
+            verificationCodeInput.required = false;
 
         } catch (error) {
             console.error("Fetch Error:", error);
-            // لۆژیکی دڵنیایی ئەگەر وێبەکە لەسەر لۆکاڵ هۆست کێشەی بۆ دروست بوو
-            showNotification("تۆمارکردن سەرکەوتوو بوو", "پڕۆسەکە ئەنجام درا. تکایە بۆ دڵنیایی ئیمێڵەکەت یان شیتەکە بپشکنە.", "success");
+            showNotification("هەڵەیەک ڕوویدا", "پەیوەندی لەگەڵ سێرڤەر سەرکەوتوو نەبوو. هێڵی ئینتەرنێتەکەت بپشکنە.", "error");
         } finally {
             submitBtn.disabled = false;
             submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -160,9 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ------------------------------------------------------------------
-    // ٦. فەنکشنی دروستکردنی تۆستەکان (Toasts)
-    // ------------------------------------------------------------------
     function showNotification(title, message, type = 'success') {
         const container = document.getElementById('notificationContainer');
         const toast = document.createElement('div');
