@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کۆنفرانسی زانستی نێودەوڵەتی زانکۆی سەڵاحەدین</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        // لێرەدا فۆنتی NRT وەک فۆنتی سەرەکی دەقە کوردییەکان جێگیرکراوە
+                        sans: ['NRT', 'Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="h-full text-white selection:bg-cyan-500 selection:text-black antialiased">
+
+    <div class="fixed inset-0 w-full h-full z-0 overflow-hidden bg-[#090514]">
+        <canvas id="bgCanvas" class="absolute inset-0 w-full h-full block z-10 opacity-60"></canvas>
+        
+        <video autoplay loop muted playsinline id="bgVideo" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
+            <source src="confr1.mp4" type="video/mp4">
+        </video>
+        
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#090514]/70 to-[#090514] z-20 pointer-events-none"></div>
+    </div>
+
+    <div class="relative z-30 min-h-full flex flex-col justify-between pointer-events-none">
+        
+        <header class="w-full px-6 py-6 md:px-12 md:py-8 flex items-center justify-between pointer-events-auto">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 p-1 flex items-center justify-center backdrop-blur-md">
+                    <img src="salahaddin.logo.png" alt="Salahaddin University Logo" class="w-full h-full object-contain">
+                </div>
+                <span class="font-display font-bold text-base md:text-lg tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white to-neutral-400">
+                    SU CONFERENCE 2026
+                </span>
+            </div>
+            
+            <button id="openProgramBtn" class="px-5 py-2.5 rounded-full border border-cyan-400/40 hover:border-cyan-400 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 text-sm font-medium transition-all duration-300 flex items-center gap-2 backdrop-blur-sm">
+                <i data-lucide="calendar" class="w-4 h-4"></i>
+                پڕۆگرامی کۆنفرانس
+            </button>
+        </header>
+
+        <main class="w-full px-6 py-8 md:px-12 flex-grow grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto pointer-events-auto">
+            
+            <div class="space-y-6 text-right lg:text-left" dir="rtl">
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400/20 uppercase tracking-widest">
+                    Scientific Event
+                </span>
+                <h1 class="font-sans text-3xl md:text-5xl font-extrabold tracking-tight leading-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-300 drop-shadow-[0_10px_10px_rgba(0,0,0,0.5)]">
+                    کۆنفرانسی نێودەوڵەتی زانکۆی سەڵاحەدین بۆ زانستە کارپێکراوەکان و تەکنەلۆژیای سەردەم
+                </h1>
+                <div class="space-y-3 text-neutral-300 text-xs md:text-sm font-light leading-relaxed">
+                    <p class="text-white font-medium">• بە چاودێری پ.د. کامەران یونس محمدامین (سەرۆکی زانکۆی سەڵاحەدین - هەولێر)</p>
+                    <p>• ڕێکخەر: بەڕێوەبەرایەتی تەندروستی و سەلامەتی زانکۆی سەڵاحەدین بە هەماهەنگی بەشی کیمیای کۆلێژی زانست</p>
+                </div>
+            </div>
+
+            <div class="p-6 md:p-8 bg-slate-950/60 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl space-y-6">
+                <div class="border-b border-white/10 pb-4 text-right">
+                    <h2 class="font-sans font-bold text-xl text-white flex items-center justify-end gap-2">
+                        فۆڕمی خۆتۆمارکردن <i data-lucide="user-plus" class="text-cyan-400 w-5 h-5"></i>
+                    </h2>
+                    <p class="text-xs text-neutral-400 mt-1">تکایە زانیارییەکانت بە وردی پڕبکەرەوە بۆ وەرگرتنی بڕوانامە.</p>
+                </div>
+
+                <form id="conferenceForm" class="space-y-4 text-sm" dir="rtl">
+                    <div class="space-y-1.5 text-right">
+                        <label class="text-xs font-semibold text-neutral-300">ناوی سیانی (تەنها پیت و دەقی کوردی):</label>
+                        <input type="text" id="userName" required autocomplete="off" class="w-full p-3 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-cyan-500 transition duration-200">
+                    </div>
+
+                    <div class="space-y-1.5 text-right">
+                        <label class="text-xs font-semibold text-neutral-300">زانکۆ / کۆلێژ / دامەزراوە (تەنها دەقی کوردی):</label>
+                        <input type="text" id="userUniversity" required autocomplete="off" class="w-full p-3 bg-black/40 border border-white/10 rounded-xl text-white focus:outline-none focus:border-cyan-500 transition duration-200">
+                    </div>
+
+                    <div class="space-y-1.5 text-right">
+                        <label class="text-xs font-semibold text-neutral-300">ئیمێڵی ئەکتیڤ (تەنها پیتی ئینگلیزی و ژمارە):</label>
+                        <input type="text" id="userEmail" required autocomplete="off" class="w-full p-3 bg-black/40 border border-white/10 rounded-xl text-left text-white focus:outline-none focus:border-cyan-500 transition duration-200" dir="ltr">
+                    </div>
+
+                    <div class="space-y-1.5 text-right relative">
+                        <label class="text-xs font-semibold text-neutral-300">جۆری بەشداربوون:</label>
+                        
+                        <div id="dropdownTrigger" class="w-full p-3 bg-black/40 border border-white/10 rounded-xl text-white cursor-pointer flex items-center justify-between select-none transition duration-200 hover:border-neutral-700">
+                            <span id="dropdownSelectedValue">بەشداربوون (بێ بڕوانامە - خۆڕایی)</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-neutral-400 transition-transform duration-200" id="dropdownArrow"></i>
+                        </div>
+                        
+                        <div id="dropdownMenu" class="absolute left-0 right-0 mt-1 bg-slate-950 border border-white/10 rounded-xl shadow-2xl z-20 hidden overflow-hidden">
+                            <div class="dropdown-item p-3 hover:bg-cyan-500/10 cursor-pointer transition text-neutral-200 font-medium" data-value="بێ بڕوانامە">
+                                بەشداربوون (بێ بڕوانامە - خۆڕایی)
+                            </div>
+                            <div class="dropdown-item p-3 hover:bg-cyan-500/10 cursor-pointer transition text-neutral-200 font-medium border-t border-white/5" data-value="بڕوانامە">
+                                بەشداربوون + بڕوانامەی فەرمی (پێویستی بە کۆدە)
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="certOption" value="بێ بڕوانامە">
+                    </div>
+
+                    <div id="codeContainer" class="space-y-1.5 text-right hidden">
+                        <label class="text-xs font-semibold text-yellow-400 flex items-center justify-start gap-1">
+                            کۆدی دڵنیایی بڕوانامە <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                        </label>
+                        <input type="text" id="verificationCode" placeholder="ABC123" class="w-full p-3 bg-black/40 border border-yellow-500/30 focus:border-yellow-400 rounded-xl text-white font-mono uppercase tracking-widest focus:outline-none transition duration-200" dir="ltr">
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="w-full py-3 mt-4 bg-gradient-to-r from-cyan-400 to-purple-500 hover:from-cyan-300 hover:to-purple-400 text-black font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 shadow-[0_4px_20px_rgba(6,182,212,0.25)] flex items-center justify-center gap-2">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                        <span id="btnText">تۆمارکردنی بەشداربوون</span>
+                    </button>
+                </form>
+            </div>
+        </main>
+
+        <footer class="w-full px-6 py-6 md:px-12 border-t border-white/5 bg-black/20 backdrop-blur-sm flex flex-col md:flex-row gap-4 items-center justify-between pointer-events-auto text-xs text-neutral-500">
+            <div class="flex items-center gap-2 text-neutral-400">
+                <div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
+                <span>SECURE REGISTRATION SYSTEM ACTIVE</span>
+            </div>
+            <div>
+                &copy; 2026 Salahaddin University. Developed for Applied Sciences & Technology Conference.
+            </div>
+        </footer>
+    </div>
+
+    <div id="programModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-slate-950 border border-white/10 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="modalContainer">
+            
+            <div class="p-4 border-b border-white/10 flex items-center justify-between bg-black/40">
+                <button id="closeProgramBtn" class="text-neutral-400 hover:text-white p-1 rounded-lg hover:bg-white/5 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <h3 class="font-sans font-bold text-base text-cyan-400 flex items-center gap-2">
+                    پڕۆگرامی فەرمی کۆنفرانس <i data-lucide="calendar"></i>
+                </h3>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-6 text-right" dir="rtl">
+                <div class="text-xs text-neutral-400 space-y-1 bg-white/5 p-3 rounded-xl border border-white/5">
+                    <p class="text-neutral-200 font-semibold">📍 شوێن: کۆلێژی زانست - هۆڵی کۆنفرانس - بەشی ماتماتیک</p>
+                    <p>📅 ڕێکەوت: ١٦ / ٢ / ٢٠٢٦ (دووشەممە) کاتژمێر ٠٩:٣٠ی بەیانی</p>
+                </div>
+
+                <div class="space-y-4 font-sans text-sm">
+                    <div class="text-xs font-bold tracking-widest text-cyan-400 uppercase border-b border-cyan-500/20 pb-1">⏱️ دانیشتنی یەکەم: دەستپێک و بابەتەکان</div>
+                    
+                    <div class="flex gap-4 p-3 rounded-xl bg-black/40 border border-white/5 items-start">
+                        <span class="font-mono text-cyan-400 font-bold shrink-0 text-xs mt-0.5" dir="ltr">09:30 AM</span>
+                        <div>
+                            <h4 class="font-bold text-white">مەراسیمی کردنەوە و وتارەکان</h4>
+                            <p class="text-xs text-neutral-400 mt-0.5">بەخێرهاتن، قورئانی پیرۆز، سروودی نەتەوەیی، وتاری بەڕێز سەرۆکی زانکۆ و وتاری بەڕێز ڕاگری کۆلێژ.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 p-3 rounded-xl bg-black/40 border border-white/5 items-start">
+                        <span class="font-mono text-cyan-400 font-bold shrink-0 text-xs mt-0.5" dir="ltr">09:45 AM</span>
+                        <div>
+                            <h4 class="font-bold text-white">بابەتی یەکەم: سەلامەتی و ئاسایشی کیمیایی</h4>
+                            <p class="text-xs text-neutral-300 mt-0.5">پێشکەشکار: پ.ی.د. دۆنژا جەلیل ڕەحیم (مامۆستای زانکۆ)</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 p-3 rounded-xl bg-black/40 border border-white/5 items-start">
+                        <span class="font-mono text-cyan-400 font-bold shrink-0 text-xs mt-0.5" dir="ltr">10:05 AM</span>
+                        <div>
+                            <h4 class="font-bold text-white">بابەتی دووەم: ڕۆڵی تیمی CBRN لە کەمکردنەوەی زیان لە ڕووداوەکان</h4>
+                            <p class="text-xs text-neutral-300 mt-0.5">پێشکەشکار: عەقید صباح وەلی قادر (بەڕێوەبەری هۆبەی CBRN لە ب. بەرگری شارستانی هەولێر)</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 p-3 rounded-xl bg-black/40 border border-white/5 items-start">
+                        <span class="font-mono text-cyan-400 font-bold shrink-0 text-xs mt-0.5" dir="ltr">10:25 AM</span>
+                        <div>
+                            <h4 class="font-bold text-white">بابەتی سێیەم: هەڵسەنگاندنی مەترسی ئاسایشی کیمیایی لە تاقیگەکان</h4>
+                            <p class="text-xs text-neutral-300 mt-0.5">پێشکەشکار: پ.ی.د. سەنگەر ساڵح ئەحمەد (مامۆستای زانکۆ)</p>
+                        </div>
+                    </div>
+
+                    <div class="text-xs font-bold tracking-widest text-purple-400 uppercase border-b border-purple-500/20 pt-2 pb-1">☕ کاتی پشوو</div>
+                    <div class="flex gap-4 p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 items-center justify-between">
+                        <span class="font-bold text-purple-300">Coffee Break (ماوەی ٢٠ خولەک)</span>
+                        <span class="font-mono text-purple-400 font-bold text-xs" dir="ltr">10:45 AM - 11:05 AM</span>
+                    </div>
+
+                    <div class="text-xs font-bold tracking-widest text-cyan-400 uppercase border-b border-cyan-500/20 pt-2 pb-1">💬 دانیشتنی دووەم: پانێڵ و مەراسیمی کۆتایی</div>
+
+                    <div class="flex gap-4 p-3 rounded-xl bg-black/40 border border-white/5 items-start">
+                        <span class="font-mono text-cyan-400 font-bold shrink-0 text-xs mt-0.5" dir="ltr">11:05 AM</span>
+                        <div>
+                            <h4 class="font-bold text-white">دەستپێکی پانێڵی گفتوگۆ و پرسیار و وەڵام</h4>
+                            <p class="text-xs text-neutral-300 mt-0.5">بەڕێوەبەری پانێڵ: م. ئاریان حسێن دزەیی (ب. تەندروستی و سەلامەتی زانکۆی سەڵاحەدین)</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 p-3 rounded-xl bg-black/40 border border-white/5 items-start">
+                        <span class="font-mono text-cyan-400 font-bold shrink-0 text-xs mt-0.5" dir="ltr">12:00 PM</span>
+                        <div>
+                            <h4 class="font-bold text-white">مەراسیمی کۆتایی هێنان و بەخشینی بڕوانامەکان</h4>
+                            <p class="text-xs text-neutral-400 mt-0.5">هەڵسەنگاندن (Feedback)، خوێندنەوەی ڕاسپاردەکان، دابەشکردنی ڕێزلێنان و گرتنی وێنەی بەکۆمەڵ.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notificationContainer" class="fixed bottom-6 left-6 z-50 pointer-events-none flex flex-col gap-2 max-w-sm"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
