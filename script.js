@@ -23,14 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ٢. پاڵاوتنی توندی خانەکان (Input Validations)
     
-    // خانەی ناوی سیانی: تەنها ڕێگە بە دەقی کوردی/عەرەبی دەدات و ژمارە، ئینگلیزی و هێماکان لادەبات
+    // خانەی ناوی سیانی: پاککردنەوەی پیتە ئینگلیزییەکان، ژمارەکان و هێماکان بە جیا
     userName.addEventListener('input', function() {
-        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z.,\/#!$%\^&\*;:{}=\-_`~()?"'@+<>|\\\[\]}{]/g, '');
+        this.value = this.value.replace(/[A-Za-z]/g, ''); // لادانی پیتە ئینگلیزییەکان
+        this.value = this.value.replace(/[0-9٠-٩0-۹]/g, ''); // shadow لادانی هەموو جۆرە ژمارەیەک
+        this.value = this.value.replace(/[~`!@#$%^&*()_\-+={}\[\]|\\:;"'<>,.?\/]/g, ''); // لادانی هێماکان بە سەلامەتی
     });
 
-    // خانەی زانکۆ و کۆلێژ: تەنها ڕێگە بە دەقی کوردی/عەرەبی دەدات و ژمارە، ئینگلیزی و هێماکان لادەبات
+    // خانەی زانکۆ و کۆلێژ: پاککردنەوەی پیتە ئینگلیزییەکان، ژمارەکان و هێماکان بە جیا
     userUniversity.addEventListener('input', function() {
-        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z.,\/#!$%\^&\*;:{}=\-_`~()?"'@+<>|\\\[\]}{]/g, '');
+        this.value = this.value.replace(/[A-Za-z]/g, ''); 
+        this.value = this.value.replace(/[0-9٠-٩0-۹]/g, ''); 
+        this.value = this.value.replace(/[~`!@#$%^&*()_\-+={}\[\]|\\:;"'<>,.?\/]/g, ''); 
     });
 
     // خانەی ئیمێڵ: تەنها پیتی ئینگلیزی، ژمارە و هێماکانی ئیمێڵ وەردەگرێت
