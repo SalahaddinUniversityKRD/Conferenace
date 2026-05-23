@@ -1,0 +1,83 @@
+/* ١. ناساندن و بەستنەوەی فۆنتی نیشتمانی NRT */
+@font-face {
+    font-family: 'NRT';
+    src: url('NRT-Reg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ٢. ستایلی گشتی بۆ جەستەی وێبەکە */
+body {
+    font-family: 'NRT', 'Plus Jakarta Sans', sans-serif;
+    background-color: #090514;
+    overflow-x: hidden;
+}
+
+/* ٣. ڕێکخستنی سڕینەوەی لێوارە بنەڕەتییەکانی ئۆپشنی مۆبایل لە دراپداون */
+select, input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* ٤. دروستکردنی سکڕۆڵباری شیک و باریک (Custom Scrollbar) */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.01);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(6, 182, 212, 0.15); /* ڕەنگی نیۆنی شین بۆ لێواری سکڕۆڵەکە */
+    border-radius: 999px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(6, 182, 212, 0.4);
+}
+
+/* ٥. ئەنیمەیشنی تایبەت بۆ لێواری لۆگۆ و دوگمەکان */
+@keyframes pulse-slow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(0.98); }
+}
+
+.animate-pulse-slow {
+    animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ٦. ستایلی تایبەت بۆ مۆدێلی پڕۆگرامی کۆنفرانس و کاریگەرییە شوشەیییەکان */
+.backdrop-blur-md {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.backdrop-blur-xl {
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}
+
+/* شێوازی نەرمکردنی پیشاندانی مۆدێل کاتێک کارا دەبێت */
+#programModal.modal-active {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+#programModal.modal-active #modalContainer {
+    transform: scale(1) !important;
+}
+
+/* ٧. ستایلکردنی خانەکانی فۆڕمەکە کاتێک خەتایان تێدایە (بۆ دیبەگ) */
+.input-error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+}
+
+.input-success {
+    border-color: #10b981 !important;
+}
