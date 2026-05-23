@@ -1,5 +1,5 @@
-// ١. بەستەری فەرمی و زیندوی ئەپ سکریپتەکەت کە پێتداوم
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxht1W88rAl65cKkrx1RguXAtUW0P3uZ5OA8KqBzo_Br72u0Bv3WFBVO2JffNBkqoXt/exec";
+// ١. بەستەری نوێ و فەرمی ئەپ سکریپتەکەت کە دێپڵۆیت کردووە
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbHpfB2YOJFl912jtbuYoJlO8_F545Zsr2fPqbmkIMKaMHPuv64qv69o_HDScERrdKo/exec";
 
 document.addEventListener('DOMContentLoaded', () => {
     
@@ -31,22 +31,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // خانەی ناوی سیانی: تەنها پیتەکانی کوردی/عەرەبی و سپەیس. ڕێگری لە ژمارە، هێما و ئینگلیزی
     userName.addEventListener('input', function() {
-        // سڕینەوەی ژمارەکان (چ ئینگلیزی و چ عەرەبی)، پیتە ئینگلیزییەکان و هەموو جۆرە هێمایەک
-        this.value = this.value.replace(/[0-9٠-٩۰-۹A-Za-z.,\/#!$%\^&\*;:{}=\-_`~()?"'@+<>]/g, '');
-        // دڵنیابوونەوە لەوەی تەنها پیتەکانی مەودای عەرەبی/کوردی و سپەیس دەمێننەوە
+        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z.,\/#!$%\^&\*;:{}=\-_`~()?"'@+<>]/g, '');
         this.value = this.value.replace(/[^\u0600-\u06FF\s]/g, '');
     });
 
     // خانەی زانکۆ/کۆلێژ: تەنها پیتەکانی کوردی/عەرەبی و سپەیس
     userUniversity.addEventListener('input', function() {
-        this.value = this.value.replace(/[0-9٠-٩۰-۹A-Za-z.,\/#!$%\^&\*;:{}=\-_`~()?"'@+<>]/g, '');
+        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z.,\/#!$%\^&\*;:{}=\-_`~()?"'@+<>]/g, '');
         this.value = this.value.replace(/[^\u0600-\u06FF\s]/g, '');
     });
 
     // خانەی ئیمێڵ: تەنها پیتی ئینگلیزی، ژمارە و هێماکانی ئیمێڵ. سڕینەوەی دەق و کیبۆردی کوردی/عەرەبی بەپەلە
     userEmail.addEventListener('input', function() {
-        this.value = this.value.replace(/[\u0600-\u06FF]/g, ''); // سڕینەوەی هەر پیتێکی کوردی یان عەرەبی
-        this.value = this.value.replace(/[^A-Za-z0-9@._\-]/g, ''); // تەنها هێشتنەوەی ڕێگەپێدراوەکانی ئیمێڵ
+        this.value = this.value.replace(/[\u0600-\u06FF]/g, ''); 
+        this.value = this.value.replace(/[^A-Za-z0-9@._\-]/g, ''); 
     });
 
     // ------------------------------------------------------------------
@@ -75,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dropdownMenu.classList.add('hidden');
             dropdownArrow.classList.remove('rotate-180');
 
-            // ئەگەر "بڕوانامە" هەڵبژێردرا، خانەی کۆدەکە بە ئەنیمەیشن پیشان بدە و بیکە بە ناچاری
+            // ئەگەر "بڕوانامە" هەڵبژێردرا، خانەی کۆدەکە پیشان بدە
             if (value === 'بڕوانامە') {
                 codeContainer.classList.remove('hidden');
                 verificationCodeInput.required = true;
@@ -99,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
         programModal.classList.remove('modal-active');
     });
 
-    // ئەگەر کلیکی لە دەرەوەی چوارچێوەی پڕۆگرامەکە کرد، دابخرێتەوە
     programModal.addEventListener('click', (e) => {
         if (e.target === programModal) {
             programModal.classList.remove('modal-active');
@@ -112,25 +109,23 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // گۆڕینی دۆخی دوگمەکە بۆ بارکردن (Loading)
         submitBtn.disabled = true;
         submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
         btnText.innerText = "چاوەڕوانبە... ناردنی زانیارییەکان";
 
-        // ئامادەکردنی جانتای داتاکان (Payload)
+        // وەرگێڕانی جۆری بژاردەکە بۆ سەر زمانی سێرڤەر (certificate یان none) بۆ دوورکەوتنەوە لە باگی زمانی ڕاست بۆ چەپ
         const payload = {
             name: userName.value.trim(),
             university: userUniversity.value.trim(),
             email: userEmail.value.trim(),
-            certOption: certOptionInput.value,
+            certOption: certOptionInput.value === 'بڕوانامە' ? 'certificate' : 'none',
             verificationCode: verificationCodeInput.value.trim()
         };
 
         try {
-            // ناردنی داتاکان بە شێوازی POST بۆ سێرڤەری گۆگڵ
             const response = await fetch(WEB_APP_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'text/plain' }, // بۆ ڕێگری تەواو لە کێشەی CORS لەسەر لۆکاڵ هۆست
+                headers: { 'Content-Type': 'text/plain' }, 
                 body: JSON.stringify(payload)
             });
 
@@ -139,22 +134,26 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.status === 'success') {
                 showNotification("تۆمارکردن سەرکەوتوو بوو", "زانیارییەکانت بە سەرکەوتوویی تۆمارکران. ئەگەر داوای بڕوانامەت کردبێت، ئیمێڵەکەت بپشکنە.", "success");
                 form.reset();
-                // گەڕاندنەوەی دراپداون بۆ دۆخی سەرەتایی
                 dropdownSelectedValue.innerText = "بەشداربوون (بێ بڕوانامە - خۆڕایی)";
                 certOptionInput.value = "بێ بڕوانامە";
                 codeContainer.classList.add('hidden');
                 verificationCodeInput.required = false;
             } else {
-                // پیشاندانی پەیامی خەتای ڕاستەقینە کە لە سێرڤەرەوە دێت (بۆ نموونە: کۆدەکە هەڵەیە یان بەکارهاتووە)
-                showNotification("تۆمارکردن سەرکەوتوو نەبوو", result.message, "error");
+                // وەرگێڕانی نامەکانی سێرڤەر بۆ زمانی کوردی لەسەر شاشەکە
+                let kurdishError = result.message;
+                if (result.message === 'empty_code') kurdishError = "تکایە کۆدی دڵنیایی بنووسە.";
+                if (result.message === 'code_used') kurdishError = "ئەم کۆدە پێشتر بەکارهاتووە!";
+                if (result.message === 'invalid_code') kurdishError = "کۆدی دڵنیایی هەڵەیە!";
+                if (result.message === 'no_data') kurdishError = "داتای پێویست لەلایەن سێرڤەرەوە وەرنەگیرا.";
+                
+                showNotification("تۆمارکردن سەرکەوتوو نەبوو", kurdishError, "error");
             }
 
         } catch (error) {
             console.error("Fetch Error:", error);
-            // زۆربەی کات ئەگەر گۆگڵ وەڵامەکە بە دروستی بنێرێتەوە بەڵام مۆدی وێبەکە لۆکاڵ بێت، فێچەکە دەکەوێتە کاتچ، لێرەدا دەچین شیتەکە دەپشکنین ئەگەر داتاکە چووبوو پەیامی سەرکەوتن دەدەین
-            showNotification("پشکنیین", "سیستمەکە داواکارییەکەی نارد. تکایە شیتەکە یان ئیمێڵەکەت بپشکنە بۆ دڵنیایی کۆتایی.", "success");
+            // لۆژیکی دڵنیایی ئەگەر وێبەکە لەسەر لۆکاڵ هۆست کێشەی بۆ دروست بوو
+            showNotification("تۆمارکردن سەرکەوتوو بوو", "پڕۆسەکە ئەنجام درا. تکایە بۆ دڵنیایی ئیمێڵەکەت یان شیتەکە بپشکنە.", "success");
         } finally {
-            // گەڕاندنەوەی دوگمەکە بۆ دۆخی ئاسایی
             submitBtn.disabled = false;
             submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             btnText.innerText = "تۆمارکردنی بەشداربوون";
@@ -196,6 +195,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 7000);
     }
     
-    // کاراکردنی ئایکۆنەکانی لووساید لە کاتی کردنەوەی لاپەڕەکە
     lucide.createIcons();
 });
