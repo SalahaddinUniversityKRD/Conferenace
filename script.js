@@ -21,30 +21,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeProgramBtn = document.getElementById('closeProgramBtn');
     const programModal = document.getElementById('programModal');
 
-    // ٢. پاڵاوتنی توندی خانەکان (Input Validations) - مۆدی ڕێجێکسی هاوسەنگ
-    
-    // خانەی ناوی سیانی: تەنها ڕێگەدان بە دەقی کوردی/عەرەبی و سپەیس
-    userName.addEventListener('input', function() {
-        let start = this.selectionStart;
-        let originalLength = this.value.length;
-        
-        // بردنی نیشانەی (-) بۆ کۆتایی فلتەرەکە بۆ ڕێگری لە قفڵبوونی خانەکە
-        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z`~!@#$%^&*()_+=\[\]{}|\\:;"'<>,.?\/؟٪\-]/g, '');
-        
-        let newLength = this.value.length;
-        this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
-    });
+    // ٢. فەنکشنی هاوبەش بۆ پاڵاوتنی توندی خانە کوردییەکان (ناوی سیانی + زانکۆ)
+    function filterKurdishInput(inputElement) {
+        inputElement.addEventListener('input', function() {
+            let start = this.selectionStart;
+            let originalLength = this.value.length;
+            
+            // سڕینەوەی ئینگلیزی، ژمارەکان و هەموو جۆرە هێمایەکی کوردی و جیهانی بە گەرەنتی
+            this.value = this.value.replace(/[A-Za-z0-9٠-٩0-۹!"#$%&'()*+,\-.\/:;<=>?@\[\\\]\^_`{|}~؟٪]/g, '');
+            
+            let newLength = this.value.length;
+            this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
+        });
+    }
 
-    // خانەی زانکۆ و کۆلێژ: تەنها ڕێگەدان بە دەقی کوردی/عەرەبی و سپەیس (ڕێک وەک ناوی سیانی)
-    userUniversity.addEventListener('input', function() {
-        let start = this.selectionStart;
-        let originalLength = this.value.length;
-        
-        this.value = this.value.replace(/[0-9٠-٩0-۹A-Za-z`~!@#$%^&*()_+=\[\]{}|\\:;"'<>,.?\/؟٪\-]/g, '');
-        
-        let newLength = this.value.length;
-        this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
-    });
+    // کاراکردنی فەنکشنە یەکدەستەکە لەسەر هەردوو خانەکە بەبێ جیاوازی
+    filterKurdishInput(userName);
+    filterKurdishInput(userUniversity);
 
     // خانەی ئیمێڵ: تەنها پیتی ئینگلیزی، ژمارە و هێماکانی ئیمێڵ وەردەگرێت
     userEmail.addEventListener('input', function() {
@@ -133,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (result.status === 'success') {
-                showNotification("تۆمارکردن سەرکەوو بوو", "زانیارییەکانت بە سەرکەوتوویی تۆمارکران. ئیمێڵەکەت یان شیتەکە ببێنە.", "success");
+                showNotification("تۆمارکردن سەرکەوتوو بوو", "زانیارییەکانت بە سەرکەوتوویی تۆمارکران. ئیمێڵەکەت یان شیتەکە ببێنە.", "success");
                 form.reset();
                 dropdownSelectedValue.innerText = "بەشداربوون (بێ بڕوانامە - خۆڕایی)";
                 certOptionInput.value = "بێ بڕوانامە";
