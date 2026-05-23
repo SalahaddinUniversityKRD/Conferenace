@@ -21,30 +21,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeProgramBtn = document.getElementById('closeProgramBtn');
     const programModal = document.getElementById('programModal');
 
-    // ٢. پاڵاوتنی خانەکان (Input Validations) - مۆدی جیاکراوەی بێ باگ
+    // ٢. پاڵاوتنی خانەکان (Input Validations) - مۆدی تەنها بلۆککردنی ئینگلیزی و ژمارە
     
-    // خانەی ناوی سیانی: تەنها ڕێگەدان بە دەقی کوردی/عەرەبی و سپەیس
+    // خانەی ناوی سیانی: تەنها ڕێگری لە پیت و ژمارەی ئینگلیزی دەکات (کوردی و عەرەبی ئازادن)
     userName.addEventListener('input', function() {
         let start = this.selectionStart;
         let originalLength = this.value.length;
         
-        // پاککردنەوەی هەنگاو بە هەنگاو بۆ ڕێگری لە قفڵبوون
-        this.value = this.value.replace(/[A-Za-z]/g, ''); // سڕینەوەی ئینگلیزی
-        this.value = this.value.replace(/[0-9٠-٩0-۹]/g, ''); // سڕینەوەی ژمارەکان
-        this.value = this.value.replace(/[`~!@#$%^&*()_\-+=\[\]{}|\\:;"'<>,.?\/؟٪]/g, ''); // سڕینەوەی هێماکان
+        // تەنها سڕینەوەی پیتە ئینگلیزییەکان و ژمارەکان
+        this.value = this.value.replace(/[A-Za-z0-9]/g, '');
         
         let newLength = this.value.length;
         this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
     });
 
-    // خانەی زانکۆ و کۆلێژ: ڕێک هاوشێوەی خانەی ناوی سیانی بەبێ هیچ جیاوازییەک
+    // خانەی زانکۆ و کۆلێژ: تەنها ڕێگری لە پیت و ژمارەی ئینگلیزی دەکات (کوردی و عەرەبی ئازادن)
     userUniversity.addEventListener('input', function() {
         let start = this.selectionStart;
         let originalLength = this.value.length;
         
-        this.value = this.value.replace(/[A-Za-z]/g, ''); // سڕینەوەی ئینگلیزی
-        this.value = this.value.replace(/[0-9٠-٩0-۹]/g, ''); // سڕینەوەی ژمارەکان
-        this.value = this.value.replace(/[`~!@#$%^&*()_\-+=\[\]{}|\\:;"'<>,.?\/؟٪]/g, ''); // سڕینەوەی هێماکان
+        // تەنها سڕینەوەی پیتە ئینگلیزییەکان و ژمارەکان
+        this.value = this.value.replace(/[A-Za-z0-9]/g, '');
         
         let newLength = this.value.length;
         this.setSelectionRange(start - (originalLength - newLength), start - (originalLength - newLength));
